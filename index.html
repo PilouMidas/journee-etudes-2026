@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Journée d'études 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --red:#E5321F; --violet:#4B3FD0; --paper:#FFFFFF; --bg:#0E0C14; --fg:#FFFFFF;
+  --font:"Jost","Futura","Century Gothic","Avenir Next",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--font)}
+.feed{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain}
+.feed>section{height:100%;scroll-snap-align:start;position:relative;overflow:hidden}
+
+.hero{background:var(--red);display:flex;flex-direction:column;justify-content:center;padding:8vw 7vw}
+.hero h1{margin:0;font-weight:700;font-size:clamp(2.6rem,14vw,5rem);line-height:.98;text-transform:uppercase;letter-spacing:-.01em}
+.hero p{margin:1.4rem 0 0;font-size:1.15rem;max-width:20em;line-height:1.35}
+.hero .down{position:absolute;left:0;right:0;bottom:calc(3vh + env(safe-area-inset-bottom,0px));text-align:center;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(8px)}}
+
+/* Pastille : cadre vertical 1280x2276, centré */
+.card{display:flex;align-items:center;justify-content:center;background:#000}
+.frame{position:relative;aspect-ratio:1280/2276;height:100%;max-width:100%;background:#000 center/cover no-repeat}
+@supports not (aspect-ratio:1/1){.frame{width:56.24vh}}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
+.snd{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:3;width:44px;height:44px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:var(--fg);font-size:1.2rem;cursor:pointer}
+.long{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));left:14px;z-index:3;background:var(--paper);color:var(--violet);font:500 .95rem var(--font);padding:.65rem .9rem;text-decoration:none}
+.long:focus-visible,.snd:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.hero .down{animation:none}}
+</style>
+</head>
+<body>
+<main class="feed" id="feed">
+  <section class="hero">
+    <h1>Journée<br>d'études<br>2026</h1>
+    <p>Les interventions en format court. Fais défiler pour les découvrir.</p>
+    <div class="down" aria-hidden="true">Fais défiler ↓</div>
+  </section>
+</main>
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+// ===== LISTE DES PASTILLES : une ligne par vidéo =====
+// id et h : extraits du lien Vimeo (vimeo.com/ID/H). yt : lien de la version longue.
+var YT_TEST="https://www.youtube.com/watch?v=jNQXAC9IVRw"; // lien de test : à remplacer
+var items=[
+ {titre:"TDSJ2 – Festivaliers", id:"1209221293", h:"e51e4ebd04",
+  poster:"https://i.vimeocdn.com/video/2178756874-4e4ac523a42bd54c0125cad99cf597e6e2cb241c8c8e299aa5081a7dc592805a-d?f=webp&region=us", yt:YT_TEST},
+ {titre:"TDSJ1 – Candebar", id:"1209019571", h:"12c50f42ee",
+  poster:"https://i.vimeocdn.com/video/2178489765-437b78832497de38b1add60b219633a03c6b60cdf08de8b95e2d9387d13d787d-d?f=webp&region=us", yt:YT_TEST}
+];
+// ===== FIN DE LA LISTE =====
+
+// Ordre aléatoire à chaque ouverture (Fisher-Yates)
+for(var i=items.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=items[i];items[i]=items[j];items[j]=t}
+
+var feed=document.getElementById("feed"),sound=false,btns=[],cards=[],players={},active=-1;
+
+items.forEach(function(it,k){
+  var s=document.createElement("section");s.className="card";
+  s.innerHTML='<div class="frame"><a class="long" target="_blank" rel="noopener">Voir la version longue sur YouTube</a>'
+   +'<button class="snd" type="button" aria-label="Activer ou couper le son">🔇</button></div>';
+  var fr=s.querySelector(".frame");
+  fr.style.backgroundImage='url("'+it.poster+'")';
+  fr.setAttribute("aria-label",it.titre);
+  s.querySelector(".long").href=it.yt;
+  var b=s.querySelector(".snd");btns.push(b);
+  b.addEventListener("click",function(){
+    sound=!sound;paint();
+    if(players[active]) players[active].setMuted(!sound).catch(function(){});
+  });
+  feed.appendChild(s);cards.push(s);
+});
+
+function paint(){btns.forEach(function(x){x.textContent=sound?"🔊":"🔇"})}
+
+function mount(k){
+  if(players[k]||k<0||k>=items.length) return;
+  var it=items[k],fr=cards[k].querySelector(".frame"),f=document.createElement("iframe");
+  f.src="https://player.vimeo.com/video/"+it.id+"?h="+it.h+"&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&playsinline=1&dnt=1";
+  f.allow="autoplay; fullscreen; picture-in-picture";
+  f.setAttribute("title",it.titre);
+  fr.insertBefore(f,fr.firstChild);
+  players[k]=new Vimeo.Player(f);
+}
+function unmount(k){
+  if(!players[k]) return;
+  var fr=cards[k].querySelector(".frame"),f=fr.querySelector("iframe");
+  players[k].destroy().catch(function(){});
+  if(f&&f.parentNode) f.parentNode.removeChild(f);
+  delete players[k];
+}
+function activate(k){
+  active=k;
+  for(var n=0;n<items.length;n++){
+    if(Math.abs(n-k)<=1) mount(n); else unmount(n);
+  }
+  Object.keys(players).forEach(function(n){
+    n=+n;
+    if(n===k){
+      var p=players[n];
+      p.setMuted(!sound).then(function(){return p.play()}).catch(function(){
+        // Son refusé par le navigateur : on relance en muet
+        sound=false;paint();p.setMuted(true).then(function(){return p.play()}).catch(function(){});
+      });
+    } else {
+      players[n].pause().catch(function(){});
+    }
+  });
+}
+
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting&&e.intersectionRatio>=.6){
+      var k=cards.indexOf(e.target); if(k>-1) activate(k);
+    }
+  });
+},{root:feed,threshold:[.6]});
+cards.forEach(function(c){io.observe(c)});
+mount(0); // précharge la première pastille pendant l'accueil
+</script>
+</body>
+</html>
