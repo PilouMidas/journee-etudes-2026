@@ -3,129 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Journée d'études 2026</title>
+<meta name="theme-color" content="#E5321F">
+<title>Le design en questions</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-  --red:#E5321F; --violet:#4B3FD0; --paper:#FFFFFF; --bg:#0E0C14; --fg:#FFFFFF;
-  --font:"Jost","Futura","Century Gothic","Avenir Next",Arial,sans-serif;
-}
-*,*::before,*::after{box-sizing:inherit}
-html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--font)}
-.feed{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain}
-.feed>section{height:100%;scroll-snap-align:start;position:relative;overflow:hidden}
-
-.hero{background:var(--red);display:flex;flex-direction:column;justify-content:center;padding:8vw 7vw}
-.hero h1{margin:0;font-weight:700;font-size:clamp(2.6rem,14vw,5rem);line-height:.98;text-transform:uppercase;letter-spacing:-.01em}
-.hero p{margin:1.4rem 0 0;font-size:1.15rem;max-width:20em;line-height:1.35}
-.hero .down{position:absolute;left:0;right:0;bottom:calc(3vh + env(safe-area-inset-bottom,0px));text-align:center;animation:nudge 1.6s ease-in-out infinite}
-@keyframes nudge{50%{transform:translateY(8px)}}
-
-/* Pastille : cadre vertical 1280x2276, centré */
-.card{display:flex;align-items:center;justify-content:center;background:#000}
-.frame{position:relative;aspect-ratio:1280/2276;height:100%;max-width:100%;background:#000 center/cover no-repeat}
-@supports not (aspect-ratio:1/1){.frame{width:56.24vh}}
-.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
-.snd{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:3;width:44px;height:44px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:var(--fg);font-size:1.2rem;cursor:pointer}
-.long{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));left:14px;z-index:3;background:var(--paper);color:var(--violet);font:500 .95rem var(--font);padding:.65rem .9rem;text-decoration:none}
+:root{box-sizing:border-box;--red:#E5321F;--violet:#4B3FD0;--paper:#FFF;--bg:#0E0C14;--fg:#FFF;--font:"Jost","Futura","Century Gothic","Avenir Next",Arial,sans-serif}
+*,*::before,*::after{box-sizing:inherit}html,body{width:100%;height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:var(--font)}body{overflow:hidden}
+.feed{width:100%;height:100vh;height:100dvh;overflow-x:hidden;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;scroll-padding-top:env(safe-area-inset-top,0px)}
+.feed>section{position:relative;width:100%;height:100vh;height:100dvh;min-height:100vh;min-height:100dvh;overflow:hidden;scroll-snap-align:start;scroll-snap-stop:always}
+.hero{display:flex;flex-direction:column;justify-content:center;padding:8vw 7vw;background:var(--red)}
+.hero h1{margin:0;font-weight:700;font-size:clamp(2.6rem,14vw,5rem);line-height:.98;text-transform:uppercase;letter-spacing:-.025em;animation:hero-in .9s cubic-bezier(.2,.75,.25,1) both}
+.hero p{max-width:20em;margin:1.4rem 0 0;font-size:1.15rem;line-height:1.35;animation:hero-in .9s .12s cubic-bezier(.2,.75,.25,1) both}
+.hero .down{position:absolute;right:0;bottom:calc(3vh + env(safe-area-inset-bottom,0px));left:0;text-align:center;animation:nudge 1.6s ease-in-out infinite}
+@keyframes hero-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}@keyframes nudge{50%{transform:translateY(8px)}}
+.card{display:flex;align-items:center;justify-content:center;background:#000}.frame{position:relative;width:min(100vw,56.25dvh);height:min(100dvh,177.7778vw);max-width:100%;max-height:100%;aspect-ratio:9/16;overflow:hidden;background:#000 center/contain no-repeat;touch-action:pan-y}
+.frame iframe{position:absolute;inset:0;display:block;width:100%;height:100%;border:0;pointer-events:none}
+.long{position:absolute;z-index:4;top:calc(14px + env(safe-area-inset-top,0px));left:14px;max-width:calc(100% - 82px);padding:.65rem .9rem;background:var(--paper);color:var(--violet);font:500 .95rem var(--font);line-height:1.2;text-decoration:none}
+.snd{position:absolute;z-index:5;top:calc(12px + env(safe-area-inset-top,0px));right:12px;display:grid;place-items:center;width:48px;height:48px;padding:0;border:2px solid rgba(255,255,255,.85);border-radius:50%;background:rgba(0,0,0,.72);color:#fff;font-size:1.35rem;cursor:pointer}
+.sound-hint{position:absolute;z-index:3;right:14px;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:14px;width:fit-content;max-width:calc(100% - 28px);margin:0 auto;padding:.65rem .9rem;border-radius:4px;background:rgba(0,0,0,.78);color:#fff;font-size:.95rem;text-align:center;pointer-events:none;transition:opacity .25s ease}
+.sound-hint.is-hidden{opacity:0}.video-title{position:absolute;z-index:3;right:7%;bottom:calc(11% + env(safe-area-inset-bottom,0px));left:7%;color:#fff;font-size:clamp(1.1rem,5vw,1.8rem);font-weight:700;line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,.9);pointer-events:none}
 .long:focus-visible,.snd:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){.hero .down{animation:none}}
+@media(prefers-reduced-motion:reduce){.hero h1,.hero p,.hero .down{animation:none}.sound-hint{transition:none}}
 </style>
 </head>
 <body>
-<main class="feed" id="feed">
-  <section class="hero">
-    <h1>Journée<br>d'études<br>2026</h1>
-    <p>Les interventions en format court. Fais défiler pour les découvrir.</p>
-    <div class="down" aria-hidden="true">Fais défiler ↓</div>
-  </section>
+<main class="feed" id="feed" aria-label="Pastilles vidéo sur le design">
+  <section class="hero" id="home"><h1>Le design<br>en questions</h1><p>Découvrez en une minute un concept clé du design.</p><div class="down" aria-hidden="true">Faites défiler pour découvrir ↓</div></section>
 </main>
 <script src="https://player.vimeo.com/api/player.js"></script>
 <script>
-// ===== LISTE DES PASTILLES : une ligne par vidéo =====
-// id et h : extraits du lien Vimeo (vimeo.com/ID/H). yt : lien de la version longue.
-var YT_TEST="https://www.youtube.com/watch?v=jNQXAC9IVRw"; // lien de test : à remplacer
-var items=[
- {titre:"TDSJ2 – Festivaliers", id:"1209221293", h:"e51e4ebd04",
-  poster:"https://i.vimeocdn.com/video/2178756874-4e4ac523a42bd54c0125cad99cf597e6e2cb241c8c8e299aa5081a7dc592805a-d?f=webp&region=us", yt:YT_TEST},
- {titre:"TDSJ1 – Candebar", id:"1209019571", h:"12c50f42ee",
-  poster:"https://i.vimeocdn.com/video/2178489765-437b78832497de38b1add60b219633a03c6b60cdf08de8b95e2d9387d13d787d-d?f=webp&region=us", yt:YT_TEST}
+"use strict";
+// Une ligne par pastille : titre, identifiant Vimeo, code privé et URL YouTube longue.
+// Les titres et sous-titres sont déjà incrustés dans les vidéos exportées depuis Resolve.
+const items=[
+ {titre:'CÉLINE SARAIVA',id:'1235038569',h:'f7b1bd4842',yt:'https://youtu.be/vif8Rx-RgYY',titreHTML:false},
+ {titre:'QUENTIN HIRSINGER',id:'1235038800',h:'8e73dcd1d6',yt:'https://youtu.be/FLO06NpPF2g',titreHTML:false},
+ {titre:'NATHALIE JUNOD PONSARD',id:'1235038772',h:'e0a9df8cec',yt:'https://youtu.be/-VNDuiELuw4',titreHTML:false},
+ {titre:'MIRIAM JOSI',id:'1235038766',h:'7bd85c8cac',yt:'https://youtu.be/NiCHGCjM4_M',titreHTML:false},
+ {titre:'MARIE HÉLÈNE PIGIS',id:'1235038726',h:'b546e10e7f',yt:'https://youtu.be/llCS2aboWBs',titreHTML:false},
+ {titre:'LAURENCE MAUDERLI',id:'1235038685',h:'3ca9846535',yt:'https://youtu.be/eFiokK6cDlw',titreHTML:false},
+ {titre:'JEAN LOUIS FRECHIN',id:'1235038677',h:'05a7aba09c',yt:'https://youtu.be/ELTdej7Bmd4',titreHTML:false},
+ {titre:'JACQUELINE FEBVRE',id:'1235038670',h:'8b91e04c68',yt:'https://youtu.be/SngN2Jdzqag',titreHTML:false},
+ {titre:'GRÉGOIRE TALON',id:'1235038656',h:'7cd85dbf03',yt:'https://youtu.be/NfD-8DRXVkE',titreHTML:false},
+ {titre:'BASILE DE GAULLE',id:'1235038567',h:'15dc21f813',yt:'https://youtu.be/yDFrGU1v8Mc',titreHTML:false},
+ {titre:'DAVID BIHANIC',id:'1235038566',h:'c1b890a508',yt:'https://youtu.be/7j7VidIx_CE',titreHTML:false},
+ {titre:'AUDE LE STUM',id:'1235038570',h:'c52cb8c85b',yt:'https://youtu.be/G1ol2DFdBB8',titreHTML:false},
+ {titre:'RÉGINE CHARVET PELLO',id:'1235038809',h:'6938bb7140',yt:'https://youtu.be/11bvkAw83tk',titreHTML:false},
+ {titre:'STÉPHANE DELALANDE',id:'1235038861',h:'d1eac0fd03',yt:'https://youtu.be/94nD-W1i4OY',titreHTML:false}
 ];
-// ===== FIN DE LA LISTE =====
-
-// Ordre aléatoire à chaque ouverture (Fisher-Yates)
-for(var i=items.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=items[i];items[i]=items[j];items[j]=t}
-
-var feed=document.getElementById("feed"),sound=false,btns=[],cards=[],players={},active=-1;
-
-items.forEach(function(it,k){
-  var s=document.createElement("section");s.className="card";
-  s.innerHTML='<div class="frame"><a class="long" target="_blank" rel="noopener">Voir la version longue sur YouTube</a>'
-   +'<button class="snd" type="button" aria-label="Activer ou couper le son">🔇</button></div>';
-  var fr=s.querySelector(".frame");
-  fr.style.backgroundImage='url("'+it.poster+'")';
-  fr.setAttribute("aria-label",it.titre);
-  s.querySelector(".long").href=it.yt;
-  var b=s.querySelector(".snd");btns.push(b);
-  b.addEventListener("click",function(){
-    sound=!sound;paint();
-    if(players[active]) players[active].setMuted(!sound).catch(function(){});
-  });
-  feed.appendChild(s);cards.push(s);
+// Mélange de l'ordre à chaque ouverture.
+for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]]}
+const feed=document.getElementById("feed"),home=document.getElementById("home");
+let soundEnabled=false,activeIndex=-1,currentPlayer=null,currentFrame=null,transitionId=0,lastTap=null,hintDismissed=false;
+const cards=[];
+items.forEach((item,index)=>{
+ const section=document.createElement("section");section.className="card";section.dataset.index=String(index);section.setAttribute("aria-label",item.titre);
+ const frame=document.createElement("div");frame.className="frame";if(item.poster)frame.style.backgroundImage='url("'+item.poster+'")';
+ const longLink=document.createElement("a");longLink.className="long";longLink.href=item.yt;longLink.target="_blank";longLink.rel="noopener noreferrer";longLink.textContent="Voir la version longue sur YouTube";
+ const soundButton=document.createElement("button");soundButton.className="snd";soundButton.type="button";soundButton.setAttribute("aria-label","Activer le son");soundButton.textContent="🔇";
+ const hint=document.createElement("div");hint.className="sound-hint";hint.textContent="Touche la vidéo pour activer le son";
+ frame.append(longLink,soundButton,hint);
+ if(item.titreHTML){const title=document.createElement("div");title.className="video-title";title.textContent=item.titre;frame.appendChild(title)}
+ soundButton.addEventListener("pointerdown",e=>e.stopPropagation());soundButton.addEventListener("pointerup",e=>e.stopPropagation());
+ soundButton.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();toggleSound()});
+ longLink.addEventListener("pointerdown",e=>e.stopPropagation());longLink.addEventListener("pointerup",e=>e.stopPropagation());
+ // Tap uniquement : les gestes verticaux de défilement ne sont pas bloqués.
+ frame.addEventListener("pointerdown",e=>{if(e.target.closest("button,a"))return;lastTap={x:e.clientX,y:e.clientY,time:Date.now(),pointerId:e.pointerId}});
+ frame.addEventListener("pointerup",e=>{if(!lastTap||e.pointerId!==lastTap.pointerId)return;const dx=e.clientX-lastTap.x,dy=e.clientY-lastTap.y,elapsed=Date.now()-lastTap.time;lastTap=null;if(Math.hypot(dx,dy)<12&&elapsed<500)toggleSound()});
+ frame.addEventListener("pointercancel",()=>{lastTap=null});
+ section.appendChild(frame);feed.appendChild(section);cards.push(section);
 });
-
-function paint(){btns.forEach(function(x){x.textContent=sound?"🔊":"🔇"})}
-
-function mount(k){
-  if(players[k]||k<0||k>=items.length) return;
-  var it=items[k],fr=cards[k].querySelector(".frame"),f=document.createElement("iframe");
-  f.src="https://player.vimeo.com/video/"+it.id+"?h="+it.h+"&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&playsinline=1&dnt=1";
-  f.allow="autoplay; fullscreen; picture-in-picture";
-  f.setAttribute("title",it.titre);
-  fr.insertBefore(f,fr.firstChild);
-  players[k]=new Vimeo.Player(f);
-}
-function unmount(k){
-  if(!players[k]) return;
-  var fr=cards[k].querySelector(".frame"),f=fr.querySelector("iframe");
-  players[k].destroy().catch(function(){});
-  if(f&&f.parentNode) f.parentNode.removeChild(f);
-  delete players[k];
-}
-function activate(k){
-  active=k;
-  for(var n=0;n<items.length;n++){
-    if(Math.abs(n-k)<=1) mount(n); else unmount(n);
-  }
-  Object.keys(players).forEach(function(n){
-    n=+n;
-    if(n===k){
-      var p=players[n];
-      p.setMuted(!sound).then(function(){return p.play()}).catch(function(){
-        // Son refusé par le navigateur : on relance en muet
-        sound=false;paint();p.setMuted(true).then(function(){return p.play()}).catch(function(){});
-      });
-    } else {
-      players[n].pause().catch(function(){});
-    }
-  });
-}
-
-var io=new IntersectionObserver(function(es){
-  es.forEach(function(e){
-    if(e.isIntersecting&&e.intersectionRatio>=.6){
-      var k=cards.indexOf(e.target); if(k>-1) activate(k);
-    }
-  });
-},{root:feed,threshold:[.6]});
-cards.forEach(function(c){io.observe(c)});
-mount(0); // précharge la première pastille pendant l'accueil
+function updateSoundUI(){document.querySelectorAll(".snd").forEach(b=>{b.textContent=soundEnabled?"🔊":"🔇";b.setAttribute("aria-label",soundEnabled?"Couper le son":"Activer le son")});document.querySelectorAll(".sound-hint").forEach(h=>h.classList.toggle("is-hidden",hintDismissed||soundEnabled))}
+async function toggleSound(){hintDismissed=true;soundEnabled=!soundEnabled;updateSoundUI();const p=currentPlayer;if(!p)return;try{await p.setMuted(!soundEnabled);if(soundEnabled)await p.play()}catch(_){soundEnabled=false;updateSoundUI();try{await p.setMuted(true)}catch(__){}}}
+function createPlayer(index){return new Promise((resolve,reject)=>{const item=items[index],frame=cards[index].querySelector(".frame"),iframe=document.createElement("iframe");iframe.src="https://player.vimeo.com/video/"+encodeURIComponent(item.id)+"?h="+encodeURIComponent(item.h)+"&autoplay=0&muted=1&loop=0&controls=0&title=0&byline=0&portrait=0&playsinline=1&dnt=1";iframe.allow="autoplay; fullscreen; picture-in-picture";iframe.title=item.titre;iframe.setAttribute("allowfullscreen","");frame.insertBefore(iframe,frame.firstChild);const p=new Vimeo.Player(iframe);currentFrame=iframe;currentPlayer=p;p.ready().then(()=>resolve({player:p,iframe:iframe})).catch(reject)})}
+async function stopCurrentPlayer(){const p=currentPlayer,iframe=currentFrame;currentPlayer=null;currentFrame=null;if(p){try{await p.pause()}catch(_){}try{await p.setCurrentTime(0)}catch(_){}try{await p.destroy()}catch(_){}}if(iframe&&iframe.parentNode)iframe.parentNode.removeChild(iframe)}
+async function activate(index){if(index===activeIndex&&(index===-1||currentPlayer))return;activeIndex=index;const myTransition=++transitionId;await stopCurrentPlayer();if(myTransition!==transitionId||index===-1)return;if(!window.Vimeo||!window.Vimeo.Player){console.error("Le lecteur Vimeo n'a pas pu être chargé.");return}try{const created=await createPlayer(index),p=created.player,iframe=created.iframe;if(myTransition!==transitionId||index!==activeIndex){try{await p.pause()}catch(_){}try{await p.setCurrentTime(0)}catch(_){}try{await p.destroy()}catch(_){}if(currentPlayer===p)currentPlayer=null;if(currentFrame===iframe)currentFrame=null;if(iframe.parentNode)iframe.parentNode.removeChild(iframe);return}await p.setLoop(false);await p.setMuted(!soundEnabled);await p.setCurrentTime(0);await p.play()}catch(error){if(myTransition!==transitionId)return;soundEnabled=false;updateSoundUI();const p=currentPlayer;if(p){try{await p.setMuted(true);await p.play()}catch(_){}}console.warn("La lecture Vimeo n'a pas pu démarrer normalement.",error)}}
+function findMostVisibleSection(){const root=feed.getBoundingClientRect(),sections=[home,...cards];let best=null,bestRatio=0;sections.forEach(s=>{const r=s.getBoundingClientRect(),top=Math.max(r.top,root.top),bottom=Math.min(r.bottom,root.bottom),visible=Math.max(0,bottom-top),ratio=visible/Math.max(1,r.height);if(ratio>bestRatio){best=s;bestRatio=ratio}});if(!best||bestRatio<.6)return;activate(best===home?-1:cards.indexOf(best))}
+const observer=new IntersectionObserver(findMostVisibleSection,{root:feed,threshold:[0,.25,.6,.8,1]});observer.observe(home);cards.forEach(c=>observer.observe(c));
+document.addEventListener("visibilitychange",()=>{if(document.hidden)activate(-1);else findMostVisibleSection()});
+// Accueil initial : aucun lecteur n'est préchargé ni lancé.
+updateSoundUI();
 </script>
 </body>
 </html>
